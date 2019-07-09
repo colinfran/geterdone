@@ -13,7 +13,8 @@ This is a simple [Electron](https://electronjs.org/) + [React.js](https://reactj
 You can install the .dmg file or you can run the electron app locally.
 
 ### Install .dmg file
-Download the .dmg file from the releases folder
+Download the .dmg file from the releases
+[https://github.com/colinfran/geterdone/releases/tag/1.0.0](https://github.com/colinfran/geterdone/releases/tag/1.0.0)
 ### Running on local environment
 ```
 # Clone this repository
