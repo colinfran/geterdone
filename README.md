@@ -1,14 +1,16 @@
 
+
 # Get'er Done App
 
-<p align="center">
-  <img src="https://raw.githubusercontent.com/colinfran/geterdone/master/assets/image.png" style="background-color: #000">
-</p>
+<div align="center" color="black">
+  <img src="https://raw.githubusercontent.com/colinfran/geterdone/master/assets/image-black.png" color="black" width="150" height="150"/>
+</div>
 
-This is a simple [Electron](https://electronjs.org/) + [React.js](https://reactjs.org/) Reminder App. It is designed to work without the need of a development server running in the background like so many other templates and it is hence free of cross domain request constraints.
+This is a simple [Electron](https://electronjs.org/) + [React.js](https://reactjs.org/) Reminder App.
 
-___
+
 ## Installing
+You can install the .dmg file or you can run the electron app locally.
 
 ### Install .dmg file
 Download the .dmg file from the releases folder
