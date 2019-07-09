@@ -8,6 +8,10 @@
 
 This is a simple [Electron](https://electronjs.org/) + [React.js](https://reactjs.org/) Reminder App.
 
+<div align="center" >
+  <img src="https://raw.githubusercontent.com/colinfran/geterdone/master/assets/appGif.gif"/>
+</div>
+
 
 ## Installing
 You can install the .dmg file or you can run the electron app locally.
