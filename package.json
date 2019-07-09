@@ -1,0 +1,68 @@
+{
+  "name": "geterdone",
+  "version": "1.0.0",
+  "description": "A minimal Electron application",
+  "main": "app/main.js",
+  "scripts": {
+    "postinstall": "install-app-deps",
+    "build": "gulp build",
+    "start": "gulp start",
+    "test": "gulp test",
+    "release": "gulp release"
+  },
+  "repository": "https://github.com/electron/electron-quick-start",
+  "keywords": [
+    "Electron",
+    "quick",
+    "start",
+    "tutorial",
+    "demo"
+  ],
+  "author": "GitHub",
+  "license": "CC0-1.0",
+  "devDependencies": {
+    "@babel/core": "^7.4.4",
+    "@babel/plugin-proposal-class-properties": "^7.4.4",
+    "@babel/preset-env": "^7.4.4",
+    "@babel/preset-react": "^7.0.0",
+    "babel-jest": "^24.8.0",
+    "electron": "~5.0.1",
+    "electron-builder": "^20.39.0",
+    "electron-react-devtools": "^0.5.3",
+    "electron-reload": "^1.4.0",
+    "gulp": "^4.0.2",
+    "gulp-babel": "^8.0.0",
+    "gulp-concat": "^2.6.1",
+    "gulp-css": "^0.1.0",
+    "gulp-sourcemaps": "^2.6.5",
+    "jest": "^24.8.0",
+    "react-test-renderer": "^16.8.6"
+  },
+  "dependencies": {
+    "@material-ui/core": "^4.2.0",
+    "@material-ui/icons": "^4.2.1",
+    "bootstrap": "^4.3.1",
+    "electron-is-dev": "^1.1.0",
+    "history": "^4.9.0",
+    "node-notifier": "^5.4.0",
+    "node-schedule": "^1.3.2",
+    "react": "^16.8.6",
+    "react-addons-css-transition-group": "^15.6.2",
+    "react-bootstrap": "^1.0.0-beta.9",
+    "react-component-countdown-timer": "^0.1.1",
+    "react-compound-timer": "^1.1.1",
+    "react-dom": "^16.8.6",
+    "react-router-dom": "^5.0.1",
+    "react-toolbox": "^2.0.0-beta.13",
+    "uuid": "^3.3.2"
+  },
+  "build": {
+    "appId": "com.colinfran.electrate",
+    "files": [
+      "app/**/*",
+      "node_modules/**/*",
+      "package.json"
+    ],
+    "publish": null
+  }
+}
