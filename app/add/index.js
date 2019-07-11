@@ -37,6 +37,8 @@ var _history = _interopRequireDefault(require("../history.js"));
 
 var _cron = _interopRequireDefault(require("../cron.js"));
 
+var _datepicker = _interopRequireDefault(require("./datepicker.js"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
@@ -75,9 +77,9 @@ function (_React$Component) {
 
     _defineProperty(_assertThisInitialized(_this), "onSubmit", function () {
       var obj = {
-        info: _this.state.inputVal,
-        time: _this.state.time,
-        on: _this.state.on,
+        title: _this.state.titleVal,
+        description: _this.state.descriptionVal,
+        date: _this.state.date,
         completed: false // var j = setCron(obj);
         // obj.cron = j;
 
@@ -88,18 +90,24 @@ function (_React$Component) {
       localStorage.setItem('reminders', JSON.stringify(rem));
 
       _this.setState({
-        inputVal: "",
-        time: "",
-        on: false
+        titleVal: "",
+        descriptionVal: "",
+        date: new Date()
       });
 
       _history["default"].goBack();
     });
 
+    _defineProperty(_assertThisInitialized(_this), "setDate", function (val) {
+      _this.setState({
+        date: val
+      });
+    });
+
     _this.state = {
-      inputVal: "",
-      time: "",
-      on: false
+      titleVal: "",
+      descriptionVal: "",
+      date: new Date()
     };
     return _this;
   }
@@ -132,11 +140,11 @@ function (_React$Component) {
         }, _defineProperty(_ref, "display", 'flex'), _defineProperty(_ref, "flexDirection", 'column'), _ref)
       }, _react["default"].createElement("div", null, _react["default"].createElement(_TextField["default"], {
         id: "outlined-multiline-static",
-        label: "Reminder info",
-        value: this.state.inputVal,
+        label: "Reminder title",
+        value: this.state.titleVal,
         onChange: function onChange(event) {
           _this2.setState({
-            inputVal: event.target.value
+            titleVal: event.target.value
           });
         },
         margin: "dense",
@@ -144,53 +152,28 @@ function (_React$Component) {
         style: {
           width: '100%'
         }
-      })), _react["default"].createElement("div", null, _react["default"].createElement(_FormControl["default"], {
+      })), _react["default"].createElement("div", null, _react["default"].createElement(_TextField["default"], {
+        id: "outlined-multiline-static",
+        label: "Reminder description",
+        value: this.state.descriptionVal,
+        onChange: function onChange(event) {
+          _this2.setState({
+            descriptionVal: event.target.value
+          });
+        },
+        margin: "dense",
         variant: "outlined",
         style: {
           width: '100%'
-        },
-        margin: "dense"
-      }, _react["default"].createElement(_InputLabel["default"], {
+        }
+      })), _react["default"].createElement("div", null, _react["default"].createElement(_datepicker["default"], {
+        setDate: this.setDate,
+        date: this.state.date
+      })), _react["default"].createElement("div", {
         style: {
-          backgroundColor: "#fff"
-        },
-        htmlFor: "time-native-helper"
-      }, "How often you want the reminder."), _react["default"].createElement(_Select["default"], {
-        value: this.state.time,
-        onChange: function onChange(event) {
-          _this2.setState({
-            time: event.target.value
-          });
-        },
-        input: _react["default"].createElement(_OutlinedInput["default"], {
-          name: "How often you want the reminder.",
-          id: "outlined-age-simple"
-        })
-      }, _react["default"].createElement(_MenuItem["default"], {
-        value: ""
-      }, _react["default"].createElement("em", null, "None")), _react["default"].createElement(_MenuItem["default"], {
-        value: 15
-      }, "Every 15 minutes"), _react["default"].createElement(_MenuItem["default"], {
-        value: 30
-      }, "Every 30 minutes"), _react["default"].createElement(_MenuItem["default"], {
-        value: 45
-      }, "Every 45 minutes"), _react["default"].createElement(_MenuItem["default"], {
-        value: 60
-      }, "Every 60 minutes"), _react["default"].createElement(_MenuItem["default"], {
-        value: 120
-      }, "Every 120 minutes")))), _react["default"].createElement("div", null, _react["default"].createElement(_FormControlLabel["default"], {
-        control: _react["default"].createElement(_Switch["default"], {
-          checked: this.state.on,
-          onChange: function onChange() {
-            return _this2.setState({
-              on: !_this2.state.on
-            });
-          },
-          value: "checkedB",
-          color: "primary"
-        }),
-        label: this.state.on ? "On" : "Off"
-      })), _react["default"].createElement("div", null, _react["default"].createElement(_Button["default"], {
+          marginTop: 8
+        }
+      }, _react["default"].createElement(_Button["default"], {
         variant: "contained",
         onClick: this.onSubmit
       }, "Add"))));

@@ -25,8 +25,5 @@ function run() {
   });
 }
 
-window.onload = function () {
-  // run();
-  _reactDom["default"].render(_react["default"].createElement(_app["default"], null), document.getElementById('app'));
-};
+_reactDom["default"].render(_react["default"].createElement(_app["default"], null), document.getElementById('app'));
 //# sourceMappingURL=index.js.map

@@ -12,7 +12,8 @@ var _cron = _interopRequireDefault(require("./cron.js"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
-require('electron-reload')(__dirname);
+// Replace '..' with 'about-window'
+var openAboutWindow = require('about-window')["default"];
 
 var tray = undefined;
 var mainWindow = undefined; // Don't show the app in the doc
@@ -25,8 +26,30 @@ _electron.app.on('ready', function () {
 });
 
 var createTray = function createTray() {
-  tray = new _electron.Tray(_path["default"].join('./assets/logo.png'));
+  tray = new _electron.Tray(_path["default"].join(__dirname, 'assets/logo.png'));
   tray.setIgnoreDoubleClickEvents(true);
+  tray.on('right-click', function (event) {
+    var contextMenu = _electron.Menu.buildFromTemplate([{
+      label: 'About This App',
+      click: function click() {
+        return openAboutWindow({
+          description: "About",
+          icon_path: _path["default"].join(__dirname, 'assets/image-black.png'),
+          copyright: 'Copyright (c) 2019 Colin Franceschini',
+          package_json_dir: "..",
+          bug_report_url: "https://github.com/colinfran/geterdone/issues",
+          show_close_button: "Close"
+        });
+      }
+    }, {
+      label: 'Quit',
+      click: function click() {
+        _electron.app.quit();
+      }
+    }]);
+
+    tray.popUpContextMenu(contextMenu);
+  });
   tray.on('click', function (event) {
     toggleWindow();
   });
@@ -48,7 +71,7 @@ var getWindowPosition = function getWindowPosition() {
 var createWindow = function createWindow() {
   mainWindow = new _electron.BrowserWindow({
     width: 400,
-    height: 300,
+    height: 400,
     show: false,
     frame: false,
     fullscreenable: false,

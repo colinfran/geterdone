@@ -8,6 +8,8 @@ import IconButton from '@material-ui/core/IconButton';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import CountdownTimer from "react-component-countdown-timer";
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group'; // ES6
+import format from '@date-io/date-fns';
+import Moment from 'react-moment';
 
 
 export default class Completed extends React.Component {
@@ -35,36 +37,23 @@ export default class Completed extends React.Component {
     this.setState({completed: rem});
   }
 
-  renderTime = (val) => {
-    if (val.time === 15 || val.time === 30 || val.time === 45){
-      return (
-        <span>{`Every ${val.time} minutes`}</span>
-      );
-    }
-    else if (val.time === 60){
-      return (
-        <span>{`Every hour`}</span>
-      );
-    }
-    else if (val.time === 120){
-      return (
-        <span>{`Every 2 hours`}</span>
-      );
-    }
+  renderDate = (val) => {
+    return (`Due: ${format(new Date(), 'dddd MMMM do, YYYY')}`);
   }
 
   unsetCompleted = (key) => {
     var compl = this.state.completed;
     compl[key].completed = false;
     this.setState({completed: compl});
-    var rem = localStorage.getItem('reminders') || '{}';
-    rem = JSON.parse(rem);
-    rem[key] = compl[key];
-    rem[key].completed = false;
-    localStorage.setItem('reminders', JSON.stringify(rem));
-    delete compl[key];
-    this.setState({completed: compl});
-    localStorage.setItem('completed', JSON.stringify(compl))
+    setTimeout(() => {
+      var rem = localStorage.getItem('reminders') || '{}';
+      rem = JSON.parse(rem);
+      rem[key] = compl[key];
+      localStorage.setItem('reminders', JSON.stringify(rem));
+      delete compl[key];
+      this.setState({completed: compl});
+      localStorage.setItem('completed', JSON.stringify(compl))
+    }, 500);
   }
 
   renderList = () => {
@@ -76,25 +65,28 @@ export default class Completed extends React.Component {
     else{
       return(
         <ReactCSSTransitionGroup
-           transitionName="example2"
+           transitionName="fade"
            transitionEnterTimeout={1000}
-           transitionLeaveTimeout={600}>
-            {Object.keys(this.state.completed).slice(0).reverse().map((val, i) => (
+           transitionLeaveTimeout={300}>
+            {Object.keys(this.state.completed).map((val, i) => (
               <div key={val} style={{paddingLeft: 10, paddingRight:10, height: 50, display:'flex', flexDirection: 'row', justifyContent: 'space-between', marginBottom: 15, borderRadius: 2, boxShadow: '0 6px 10px 0 rgba(0,0,0,0.14), 0 1px 18px 0 rgba(0,0,0,0.12), 0 3px 5px -1px rgba(0,0,0,0.20)'}}>
                 <div style={{display:'flex', flexDirection: 'column', justifyContent: 'center'}}>
                   <div>
                     <div className="round">
-                      <input style={{alignSelf: 'center', width: 25, height: 25}} type="checkbox" id="checkbox" checked={this.state.completed[val].completed} onChange={() => this.unsetCompleted(val)}/>
-                      <label htmlFor="checkbox"></label>
+                      <input style={{alignSelf: 'center', width: 25, height: 25}} type="checkbox" id={`checkbox${val}`} checked={this.state.completed[val].completed} onChange={() => this.unsetCompleted(val)}/>
+                      <label htmlFor={`checkbox${val}`}></label>
                     </div>
                   </div>
                 </div>
                 <div style={{display:'flex', flexDirection: 'column',alignSelf: 'center'}}>
-                  <div style={{alignSelf: 'center'}}>
-                    {this.state.completed[val].info}
+                  <div style={{alignSelf: 'center', fontWeight: 600}}>
+                    {this.state.completed[val].title}
+                  </div>
+                  <div style={{alignSelf: 'center', fontSize: 14}}>
+                    {this.state.completed[val].description}
                   </div>
                   <div style={{alignSelf: 'center', fontSize: 10}}>
-                  {this.renderTime(this.state.completed[val], val)}
+                    <Moment format="dddd, MMMM Do YYYY">{this.state.completed[val].date}</Moment>
                   </div>
                 </div>
                 <div style={{alignSelf: 'center'}}>

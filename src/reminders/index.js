@@ -4,6 +4,8 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group'; // ES6
+import format from '@date-io/date-fns';
+import Moment from 'react-moment';
 
 import CountdownTimer from "react-component-countdown-timer";
 
@@ -32,37 +34,27 @@ export default class Reminders extends React.Component {
     this.setState({reminders: rem});
   }
 
-  renderTime = (val) => {
-    if (val.time === 15 || val.time === 30 || val.time === 45){
-      return (
-        <span>{`Every ${val.time} minutes`}</span>
-      );
-    }
-    else if (val.time === 60){
-      return (
-        <span>{`Every hour`}</span>
-      );
-    }
-    else if (val.time === 120){
-      return (
-        <span>{`Every 2 hours`}</span>
-      );
-    }
-  }
-
   setCompleted = (key) => {
     var rem = this.state.reminders;
     rem[key].completed = true;
     this.setState({reminders: rem});
-    var compl = localStorage.getItem('completed') || '{}';
-    compl = JSON.parse(compl);
-    compl[key] = rem[key];
-    localStorage.setItem('completed', JSON.stringify(compl));
-    delete rem[key];
-    this.setState({reminders: rem});
-    localStorage.setItem('reminders', JSON.stringify(rem));
+    setTimeout(() => {
+      var compl = localStorage.getItem('completed') || '{}';
+      compl = JSON.parse(compl);
+      compl[key] = rem[key];
+      localStorage.setItem('completed', JSON.stringify(compl));
+      delete rem[key];
+      this.setState({reminders: rem});
+      localStorage.setItem('reminders', JSON.stringify(rem));
+    }, 500);
 
   }
+
+  // renderDate = (val) => {
+  //   var date = new Date(val);
+  //   console.log(date);
+  //   return (`Due: ${format(new Date(), 'dddd MMMM do, YYYY')}`);
+  // }
 
   renderList = () => {
     if (Object.keys(this.state.reminders).length === 0){
@@ -73,27 +65,30 @@ export default class Reminders extends React.Component {
     else{
       return(
         <ReactCSSTransitionGroup
-         transitionName="example"
+         transitionName="fade"
          transitionEnterTimeout={500}
-         transitionLeaveTimeout={1000}>
-         {Object.keys(this.state.reminders).slice(0).reverse().map((val, i) => (
+         transitionLeaveTimeout={300}>
+         {Object.keys(this.state.reminders).map((val, i) => (
            <div key={val} style={{paddingLeft: 10, paddingRight:10, height: 50, display:'flex', flexDirection: 'row', justifyContent: 'space-between', marginBottom: 15, borderRadius: 2, boxShadow: '0 6px 10px 0 rgba(0,0,0,0.14), 0 1px 18px 0 rgba(0,0,0,0.12), 0 3px 5px -1px rgba(0,0,0,0.20)'}}>
              <div style={{display:'flex', flexDirection: 'column', justifyContent: 'center'}}>
                <div>
                  <div className="round">
-                   <input style={{alignSelf: 'center', width: 25, height: 25}} type="checkbox" id="checkbox"
+                   <input style={{alignSelf: 'center', width: 25, height: 25}} type="checkbox" id={val}
                    onChange={() => {this.setCompleted(val)}}
-                   checked={this.state.reminders[val].completed}/>
-                   <label htmlFor="checkbox"></label>
+                   />
+                 <label htmlFor={val}></label>
                  </div>
                </div>
              </div>
              <div style={{display:'flex', flexDirection: 'column',alignSelf: 'center'}}>
-               <div style={{alignSelf: 'center'}}>
-                 {this.state.reminders[val].info}
+               <div style={{alignSelf: 'center', fontWeight: 600}}>
+                 {this.state.reminders[val].title}
+               </div>
+               <div style={{alignSelf: 'center', fontSize: 14}}>
+                 {this.state.reminders[val].description}
                </div>
                <div style={{alignSelf: 'center', fontSize: 10}}>
-               {this.renderTime(this.state.reminders[val], val)}
+                 <Moment format="dddd, MMMM Do YYYY">{this.state.reminders[val].date}</Moment>
                </div>
              </div>
              <div style={{alignSelf: 'center'}}>

@@ -17,6 +17,10 @@ var _Switch = _interopRequireDefault(require("@material-ui/core/Switch"));
 
 var _reactAddonsCssTransitionGroup = _interopRequireDefault(require("react-addons-css-transition-group"));
 
+var _dateFns = _interopRequireDefault(require("@date-io/date-fns"));
+
+var _reactMoment = _interopRequireDefault(require("react-moment"));
+
 var _reactComponentCountdownTimer = _interopRequireDefault(require("react-component-countdown-timer"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
@@ -66,16 +70,6 @@ function (_React$Component) {
       });
     });
 
-    _defineProperty(_assertThisInitialized(_this), "renderTime", function (val) {
-      if (val.time === 15 || val.time === 30 || val.time === 45) {
-        return _react["default"].createElement("span", null, "Every ".concat(val.time, " minutes"));
-      } else if (val.time === 60) {
-        return _react["default"].createElement("span", null, "Every hour");
-      } else if (val.time === 120) {
-        return _react["default"].createElement("span", null, "Every 2 hours");
-      }
-    });
-
     _defineProperty(_assertThisInitialized(_this), "setCompleted", function (key) {
       var rem = _this.state.reminders;
       rem[key].completed = true;
@@ -84,17 +78,19 @@ function (_React$Component) {
         reminders: rem
       });
 
-      var compl = localStorage.getItem('completed') || '{}';
-      compl = JSON.parse(compl);
-      compl[key] = rem[key];
-      localStorage.setItem('completed', JSON.stringify(compl));
-      delete rem[key];
+      setTimeout(function () {
+        var compl = localStorage.getItem('completed') || '{}';
+        compl = JSON.parse(compl);
+        compl[key] = rem[key];
+        localStorage.setItem('completed', JSON.stringify(compl));
+        delete rem[key];
 
-      _this.setState({
-        reminders: rem
-      });
+        _this.setState({
+          reminders: rem
+        });
 
-      localStorage.setItem('reminders', JSON.stringify(rem));
+        localStorage.setItem('reminders', JSON.stringify(rem));
+      }, 500);
     });
 
     _defineProperty(_assertThisInitialized(_this), "renderList", function () {
@@ -102,10 +98,10 @@ function (_React$Component) {
         return _react["default"].createElement("div", null, "No Reminders");
       } else {
         return _react["default"].createElement(_reactAddonsCssTransitionGroup["default"], {
-          transitionName: "example",
+          transitionName: "fade",
           transitionEnterTimeout: 500,
-          transitionLeaveTimeout: 1000
-        }, Object.keys(_this.state.reminders).slice(0).reverse().map(function (val, i) {
+          transitionLeaveTimeout: 300
+        }, Object.keys(_this.state.reminders).map(function (val, i) {
           return _react["default"].createElement("div", {
             key: val,
             style: {
@@ -134,13 +130,12 @@ function (_React$Component) {
               height: 25
             },
             type: "checkbox",
-            id: "checkbox",
+            id: val,
             onChange: function onChange() {
               _this.setCompleted(val);
-            },
-            checked: _this.state.reminders[val].completed
+            }
           }), _react["default"].createElement("label", {
-            htmlFor: "checkbox"
+            htmlFor: val
           })))), _react["default"].createElement("div", {
             style: {
               display: 'flex',
@@ -149,14 +144,22 @@ function (_React$Component) {
             }
           }, _react["default"].createElement("div", {
             style: {
-              alignSelf: 'center'
+              alignSelf: 'center',
+              fontWeight: 600
             }
-          }, _this.state.reminders[val].info), _react["default"].createElement("div", {
+          }, _this.state.reminders[val].title), _react["default"].createElement("div", {
+            style: {
+              alignSelf: 'center',
+              fontSize: 14
+            }
+          }, _this.state.reminders[val].description), _react["default"].createElement("div", {
             style: {
               alignSelf: 'center',
               fontSize: 10
             }
-          }, _this.renderTime(_this.state.reminders[val], val))), _react["default"].createElement("div", {
+          }, _react["default"].createElement(_reactMoment["default"], {
+            format: "dddd, MMMM Do YYYY"
+          }, _this.state.reminders[val].date))), _react["default"].createElement("div", {
             style: {
               alignSelf: 'center'
             }

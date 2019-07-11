@@ -1,9 +1,12 @@
-import {app, BrowserWindow, ipcMain, Tray} from 'electron';
+import {app, BrowserWindow, ipcMain, Tray, Menu} from 'electron';
 import path from 'path';
 import url from 'url';
 import isDevelopment from 'electron-is-dev';
-require('electron-reload')(__dirname);
+
 import setCron from './cron.js';
+
+// Replace '..' with 'about-window'
+const openAboutWindow = require('about-window').default;
 
 
 
@@ -20,11 +23,30 @@ app.on('ready', () => {
 })
 
 const createTray = () => {
-  tray = new Tray(path.join('./assets/logo.png'))
+  tray = new Tray(path.join(__dirname, 'assets/logo.png'))
   tray.setIgnoreDoubleClickEvents(true);
+  tray.on('right-click', function (event) {
+    const contextMenu = Menu.buildFromTemplate([
+      {
+        label: 'About This App',
+        click: () => openAboutWindow({
+          description: "About",
+          icon_path:  path.join(__dirname, 'assets/image-black.png'),
+          copyright: 'Copyright (c) 2019 Colin Franceschini',
+          package_json_dir: "..",
+          bug_report_url: "https://github.com/colinfran/geterdone/issues",
+          show_close_button: "Close"
+        }),
+      },
+      { label: 'Quit', click: () => { app.quit(); } },
+    ]);
+    tray.popUpContextMenu(contextMenu);
+  });
+
   tray.on('click', function (event) {
     toggleWindow()
   });
+
 }
 
 const getWindowPosition = () => {
@@ -43,7 +65,7 @@ const getWindowPosition = () => {
 const createWindow = () => {
   mainWindow = new BrowserWindow({
     width: 400,
-     height: 300,
+     height: 400,
     show: false,
     frame: false,
     fullscreenable: false,

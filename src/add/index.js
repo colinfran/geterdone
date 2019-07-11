@@ -14,25 +14,25 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Switch from '@material-ui/core/Switch';
 import history from '../history.js';
 import setCron from '../cron.js';
-
+import MaterialUIPickers from './datepicker.js'
 const uuidv1 = require('uuid/v1');
 
 export default class Add extends React.Component {
   constructor(props){
       super(props);
       this.state = {
-        inputVal: "",
-        time:"",
-        on: false
+        titleVal: "",
+        descriptionVal: "",
+        date: new Date(),
       };
   }
 
   onSubmit = () => {
 
     var obj = {
-      info: this.state.inputVal,
-      time: this.state.time,
-      on: this.state.on,
+      title: this.state.titleVal,
+      description: this.state.descriptionVal,
+      date: this.state.date,
       completed: false
     }
     // var j = setCron(obj);
@@ -43,8 +43,13 @@ export default class Add extends React.Component {
 
 
     localStorage.setItem('reminders', JSON.stringify(rem));
-    this.setState({inputVal: "", time: "", on: false});
+    this.setState({titleVal: "", descriptionVal: "", date: new Date()});
     history.goBack();
+  }
+
+  setDate = (val) =>{
+    this.setState({date: val});
+
   }
 
   render() {
@@ -59,47 +64,29 @@ export default class Add extends React.Component {
               <div>
                 <TextField
                   id="outlined-multiline-static"
-                  label="Reminder info"
-                  value={this.state.inputVal}
-                  onChange={(event)=>{this.setState({inputVal: event.target.value})}}
+                  label="Reminder title"
+                  value={this.state.titleVal}
+                  onChange={(event)=>{this.setState({titleVal: event.target.value})}}
                   margin="dense"
                   variant="outlined"
                   style={{width: '100%'}}
                 />
               </div>
               <div>
-                <FormControl variant="outlined" style={{width:'100%'}} margin="dense">
-                    <InputLabel style={{backgroundColor: "#fff"}} htmlFor="time-native-helper">How often you want the reminder.</InputLabel>
-                      <Select
-                        value={this.state.time}
-                        onChange={(event)=>{this.setState({time: event.target.value})}}
-                        input={<OutlinedInput  name="How often you want the reminder." id="outlined-age-simple" />}
-                      >
-                        <MenuItem value="">
-                          <em>None</em>
-                        </MenuItem>
-                        <MenuItem value={15}>Every 15 minutes</MenuItem>
-                        <MenuItem value={30}>Every 30 minutes</MenuItem>
-                        <MenuItem value={45}>Every 45 minutes</MenuItem>
-                        <MenuItem value={60}>Every 60 minutes</MenuItem>
-                        <MenuItem value={120}>Every 120 minutes</MenuItem>
-                      </Select>
-                  </FormControl>
-              </div>
-              <div>
-                <FormControlLabel
-                  control={
-                    <Switch
-                      checked={this.state.on}
-                      onChange={()=> this.setState({on: !this.state.on})}
-                      value="checkedB"
-                      color="primary"
-                    />
-                  }
-                  label={this.state.on ? "On" : "Off"}
+                <TextField
+                  id="outlined-multiline-static"
+                  label="Reminder description"
+                  value={this.state.descriptionVal}
+                  onChange={(event)=>{this.setState({descriptionVal: event.target.value})}}
+                  margin="dense"
+                  variant="outlined"
+                  style={{width: '100%'}}
                 />
               </div>
               <div>
+                <MaterialUIPickers setDate={this.setDate} date={this.state.date}/>
+              </div>
+              <div style={{marginTop: 8}}>
                 <Button variant="contained" onClick={this.onSubmit}>
                   Add
                 </Button>

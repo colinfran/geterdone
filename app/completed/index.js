@@ -25,6 +25,10 @@ var _reactComponentCountdownTimer = _interopRequireDefault(require("react-compon
 
 var _reactAddonsCssTransitionGroup = _interopRequireDefault(require("react-addons-css-transition-group"));
 
+var _dateFns = _interopRequireDefault(require("@date-io/date-fns"));
+
+var _reactMoment = _interopRequireDefault(require("react-moment"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
@@ -47,7 +51,6 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-// ES6
 var Completed =
 /*#__PURE__*/
 function (_React$Component) {
@@ -73,14 +76,8 @@ function (_React$Component) {
       });
     });
 
-    _defineProperty(_assertThisInitialized(_this), "renderTime", function (val) {
-      if (val.time === 15 || val.time === 30 || val.time === 45) {
-        return _react["default"].createElement("span", null, "Every ".concat(val.time, " minutes"));
-      } else if (val.time === 60) {
-        return _react["default"].createElement("span", null, "Every hour");
-      } else if (val.time === 120) {
-        return _react["default"].createElement("span", null, "Every 2 hours");
-      }
+    _defineProperty(_assertThisInitialized(_this), "renderDate", function (val) {
+      return "Due: ".concat((0, _dateFns["default"])(new Date(), 'dddd MMMM do, YYYY'));
     });
 
     _defineProperty(_assertThisInitialized(_this), "unsetCompleted", function (key) {
@@ -91,18 +88,19 @@ function (_React$Component) {
         completed: compl
       });
 
-      var rem = localStorage.getItem('reminders') || '{}';
-      rem = JSON.parse(rem);
-      rem[key] = compl[key];
-      rem[key].completed = false;
-      localStorage.setItem('reminders', JSON.stringify(rem));
-      delete compl[key];
+      setTimeout(function () {
+        var rem = localStorage.getItem('reminders') || '{}';
+        rem = JSON.parse(rem);
+        rem[key] = compl[key];
+        localStorage.setItem('reminders', JSON.stringify(rem));
+        delete compl[key];
 
-      _this.setState({
-        completed: compl
-      });
+        _this.setState({
+          completed: compl
+        });
 
-      localStorage.setItem('completed', JSON.stringify(compl));
+        localStorage.setItem('completed', JSON.stringify(compl));
+      }, 500);
     });
 
     _defineProperty(_assertThisInitialized(_this), "renderList", function () {
@@ -110,10 +108,10 @@ function (_React$Component) {
         return _react["default"].createElement("div", null, "No Completed Reminders");
       } else {
         return _react["default"].createElement(_reactAddonsCssTransitionGroup["default"], {
-          transitionName: "example2",
+          transitionName: "fade",
           transitionEnterTimeout: 1000,
-          transitionLeaveTimeout: 600
-        }, Object.keys(_this.state.completed).slice(0).reverse().map(function (val, i) {
+          transitionLeaveTimeout: 300
+        }, Object.keys(_this.state.completed).map(function (val, i) {
           return _react["default"].createElement("div", {
             key: val,
             style: {
@@ -142,13 +140,13 @@ function (_React$Component) {
               height: 25
             },
             type: "checkbox",
-            id: "checkbox",
+            id: "checkbox".concat(val),
             checked: _this.state.completed[val].completed,
             onChange: function onChange() {
               return _this.unsetCompleted(val);
             }
           }), _react["default"].createElement("label", {
-            htmlFor: "checkbox"
+            htmlFor: "checkbox".concat(val)
           })))), _react["default"].createElement("div", {
             style: {
               display: 'flex',
@@ -157,14 +155,22 @@ function (_React$Component) {
             }
           }, _react["default"].createElement("div", {
             style: {
-              alignSelf: 'center'
+              alignSelf: 'center',
+              fontWeight: 600
             }
-          }, _this.state.completed[val].info), _react["default"].createElement("div", {
+          }, _this.state.completed[val].title), _react["default"].createElement("div", {
+            style: {
+              alignSelf: 'center',
+              fontSize: 14
+            }
+          }, _this.state.completed[val].description), _react["default"].createElement("div", {
             style: {
               alignSelf: 'center',
               fontSize: 10
             }
-          }, _this.renderTime(_this.state.completed[val], val))), _react["default"].createElement("div", {
+          }, _react["default"].createElement(_reactMoment["default"], {
+            format: "dddd, MMMM Do YYYY"
+          }, _this.state.completed[val].date))), _react["default"].createElement("div", {
             style: {
               alignSelf: 'center'
             }
