@@ -9,7 +9,7 @@
 ---
 
 <div align="center" color="black">
-  <img src="https://raw.githubusercontent.com/colinfran/geterdone/master/assets/appGif.gif" color="black" />
+  <img src="https://raw.githubusercontent.com/colinfran/geterdone/master/assets/gifdemo.gif" color="black" />
 </div>
 
 
