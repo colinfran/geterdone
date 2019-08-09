@@ -12,8 +12,8 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import OutlinedInput from '@material-ui/core/OutlinedInput';
 import MenuItem from '@material-ui/core/MenuItem';
 import Switch from '@material-ui/core/Switch';
-import history from '../history.js';
-import setCron from '../cron.js';
+import hashHistory from '../history.js';
+
 import MaterialUIPickers from './datepicker.js'
 const uuidv1 = require('uuid/v1');
 
@@ -44,7 +44,7 @@ export default class Add extends React.Component {
 
     localStorage.setItem('reminders', JSON.stringify(rem));
     this.setState({titleVal: "", descriptionVal: "", date: new Date()});
-    history.goBack();
+    hashHistory.goBack();
   }
 
   setDate = (val) =>{

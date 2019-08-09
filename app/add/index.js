@@ -35,8 +35,6 @@ var _Switch = _interopRequireDefault(require("@material-ui/core/Switch"));
 
 var _history = _interopRequireDefault(require("../history.js"));
 
-var _cron = _interopRequireDefault(require("../cron.js"));
-
 var _datepicker = _interopRequireDefault(require("./datepicker.js"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }

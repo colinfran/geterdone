@@ -17,6 +17,8 @@ var _reactRouterDom = require("react-router-dom");
 
 var _history = _interopRequireDefault(require("./history.js"));
 
+var _reactLoading = _interopRequireDefault(require("react-loading"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
@@ -65,65 +67,95 @@ function (_React$Component) {
 
     _this.state = {
       active: 'home',
-      hover: ''
+      hover: '',
+      loading: true
     };
     return _this;
   }
 
   _createClass(App, [{
-    key: "render",
-    value: function render() {
+    key: "componentDidMount",
+    value: function componentDidMount() {
       var _this2 = this;
 
-      return _react["default"].createElement(_reactRouterDom.HashRouter, {
-        history: _history["default"]
-      }, _react["default"].createElement("div", {
-        className: "topnav"
-      }, _react["default"].createElement("div", {
-        className: "topnav-centered"
-      }, _react["default"].createElement(_reactRouterDom.Link, {
-        className: this.state.hover === "home" ? "hover" : "",
-        onMouseEnter: function onMouseEnter() {
-          return _this2.onHover("home");
-        },
-        onMouseLeave: function onMouseLeave() {
-          return _this2.onHover("");
-        },
-        style: this.state.active === "home" ? {
-          backgroundColor: '#fff',
-          color: '#000'
-        } : {},
-        to: "/",
-        onClick: function onClick() {
-          return _this2.linkOnClick("home");
-        }
-      }, "Home"), _react["default"].createElement(_reactRouterDom.Link, {
-        className: this.state.hover === "completed" ? "hover" : "",
-        onMouseEnter: function onMouseEnter() {
-          return _this2.onHover("completed");
-        },
-        onMouseLeave: function onMouseLeave() {
-          return _this2.onHover("");
-        },
-        style: this.state.active === "completed" ? {
-          backgroundColor: '#fff',
-          color: '#000'
-        } : {},
-        to: "/completed",
-        onClick: function onClick() {
-          return _this2.linkOnClick("completed");
-        }
-      }, "Done"))), _react["default"].createElement("div", null, _react["default"].createElement(_reactRouterDom.Route, {
-        path: "/",
-        exact: true,
-        component: _home["default"]
-      }), _react["default"].createElement(_reactRouterDom.Route, {
-        path: "/add",
-        component: _add["default"]
-      }), _react["default"].createElement(_reactRouterDom.Route, {
-        path: "/completed",
-        component: _completed["default"]
-      })));
+      setTimeout(function () {
+        _this2.setState({
+          loading: false
+        });
+      }, 2000);
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      var _this3 = this;
+
+      if (this.state.loading) {
+        return _react["default"].createElement("div", {
+          style: {
+            display: 'flex',
+            justifyContent: 'center',
+            marginTop: '30%'
+          }
+        }, _react["default"].createElement(_reactLoading["default"], {
+          type: "spin",
+          color: "#000",
+          height: 100,
+          width: 100
+        }));
+      } else {
+        return _react["default"].createElement(_reactRouterDom.HashRouter, {
+          hashHistory: _history["default"]
+        }, _react["default"].createElement("div", {
+          className: "topnav"
+        }, _react["default"].createElement("div", {
+          className: "topnav-centered"
+        }, _react["default"].createElement(_reactRouterDom.Link, {
+          className: this.state.hover === "home" && this.state.active !== "home" ? "hover" : "",
+          onMouseEnter: function onMouseEnter() {
+            return _this3.onHover("home");
+          },
+          onMouseLeave: function onMouseLeave() {
+            return _this3.onHover("");
+          },
+          style: this.state.active === "home" ? {
+            backgroundColor: '#fff',
+            color: '#000',
+            pointerEvents: 'none'
+          } : {},
+          to: "/",
+          onClick: function onClick() {
+            return _this3.linkOnClick("home");
+          }
+        }, "Home"), _react["default"].createElement(_reactRouterDom.Link, {
+          className: this.state.hover === "completed" ? "hover" : "",
+          onMouseEnter: function onMouseEnter() {
+            return _this3.onHover("completed");
+          },
+          onMouseLeave: function onMouseLeave() {
+            return _this3.onHover("");
+          },
+          style: this.state.active === "completed" ? {
+            backgroundColor: '#fff',
+            color: '#000',
+            pointerEvents: 'none'
+          } : {},
+          replace: "/completed" === location.pathname,
+          to: "/completed",
+          onClick: function onClick() {
+            return _this3.linkOnClick("completed");
+          }
+        }, "Done"))), _react["default"].createElement("div", null, _react["default"].createElement(_reactRouterDom.Route, {
+          path: "/",
+          exact: true,
+          component: _home["default"]
+        }), _react["default"].createElement(_reactRouterDom.Route, {
+          path: "/add",
+          component: _add["default"]
+        }), _react["default"].createElement(_reactRouterDom.Route, {
+          path: "/completed",
+          component: _completed["default"]
+        })));
+      }
     }
   }]);
 

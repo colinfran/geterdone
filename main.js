@@ -3,7 +3,6 @@ import path from 'path';
 import url from 'url';
 import isDevelopment from 'electron-is-dev';
 
-import setCron from './cron.js';
 
 // Replace '..' with 'about-window'
 const openAboutWindow = require('about-window').default;
@@ -14,7 +13,7 @@ let tray = undefined
 let mainWindow = undefined
 
 // Don't show the app in the doc
-app.dock.hide()
+// app.dock.hide()
 
 
 app.on('ready', () => {
@@ -82,9 +81,9 @@ const createWindow = () => {
     slashes: true
   }));
 
-  // if (isDevelopment) {
-  //     mainWindow.webContents.openDevTools();
-  // }
+  if (isDevelopment) {
+      mainWindow.webContents.openDevTools();
+  }
 
   // Hide the window when it loses focus
   mainWindow.on('blur', () => {

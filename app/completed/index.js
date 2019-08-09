@@ -21,8 +21,6 @@ var _IconButton = _interopRequireDefault(require("@material-ui/core/IconButton")
 
 var _ArrowBack = _interopRequireDefault(require("@material-ui/icons/ArrowBack"));
 
-var _reactComponentCountdownTimer = _interopRequireDefault(require("react-component-countdown-timer"));
-
 var _reactAddonsCssTransitionGroup = _interopRequireDefault(require("react-addons-css-transition-group"));
 
 var _dateFns = _interopRequireDefault(require("@date-io/date-fns"));

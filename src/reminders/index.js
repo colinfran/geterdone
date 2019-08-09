@@ -7,7 +7,6 @@ import ReactCSSTransitionGroup from 'react-addons-css-transition-group'; // ES6
 import format from '@date-io/date-fns';
 import Moment from 'react-moment';
 
-import CountdownTimer from "react-component-countdown-timer";
 
 export default class Reminders extends React.Component {
 

@@ -8,8 +8,6 @@ var _url = _interopRequireDefault(require("url"));
 
 var _electronIsDev = _interopRequireDefault(require("electron-is-dev"));
 
-var _cron = _interopRequireDefault(require("./cron.js"));
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 // Replace '..' with 'about-window'
@@ -17,8 +15,7 @@ var openAboutWindow = require('about-window')["default"];
 
 var tray = undefined;
 var mainWindow = undefined; // Don't show the app in the doc
-
-_electron.app.dock.hide();
+// app.dock.hide()
 
 _electron.app.on('ready', function () {
   createTray();
@@ -86,10 +83,12 @@ var createWindow = function createWindow() {
     pathname: _path["default"].join(__dirname, 'index.html'),
     protocol: 'file:',
     slashes: true
-  })); // if (isDevelopment) {
-  //     mainWindow.webContents.openDevTools();
-  // }
-  // Hide the window when it loses focus
+  }));
+
+  if (_electronIsDev["default"]) {
+    mainWindow.webContents.openDevTools();
+  } // Hide the window when it loses focus
+
 
   mainWindow.on('blur', function () {
     if (!mainWindow.webContents.isDevToolsOpened()) {

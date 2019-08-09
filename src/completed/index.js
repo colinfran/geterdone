@@ -6,7 +6,7 @@ import Switch from '@material-ui/core/Switch';
 import { Link } from "react-router-dom";
 import IconButton from '@material-ui/core/IconButton';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
-import CountdownTimer from "react-component-countdown-timer";
+
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group'; // ES6
 import format from '@date-io/date-fns';
 import Moment from 'react-moment';
